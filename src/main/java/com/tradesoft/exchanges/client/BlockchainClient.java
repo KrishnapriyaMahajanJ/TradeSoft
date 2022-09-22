@@ -1,6 +1,7 @@
 package com.tradesoft.exchanges.client;
 
 import com.tradesoft.exchanges.dto.response.clientResponse.BlockchainResponse;
+import com.tradesoft.exchanges.exceptions.ExchangeRequestResponseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,10 @@ public class BlockchainClient {
         String ORDER_BOOK_DATA = "/l3/";
         ResponseEntity<BlockchainResponse> response
                 = restTemplate.getForEntity(baseUrl + ORDER_BOOK_DATA + symbol, BlockchainResponse.class);
+
+        if(!response.getStatusCode().is2xxSuccessful()){
+            throw new ExchangeRequestResponseException("error in client request response "+response.getStatusCode());
+        }
         return response.getBody();
     }
 }
