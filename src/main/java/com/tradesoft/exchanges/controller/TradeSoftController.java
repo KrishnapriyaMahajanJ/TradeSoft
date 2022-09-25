@@ -16,8 +16,8 @@ public class TradeSoftController {
     @Autowired
     ExchangeDataService exchangeDataService;
 
-    @PostMapping("/exchanges/order-books")
-    ResponseEntity getOrderBook(@RequestBody ExchangeRequest exchangeRequest) {
+    @PostMapping("/exchanges/{exchange-name}/order-books")
+    ResponseEntity getOrderBook(@RequestBody ExchangeRequest exchangeRequest, @PathVariable("exchange-name") Exchanges exchanges) {
         try {
             return ResponseEntity.ok(exchangeDataService.getOrderBook(exchangeRequest));
         } catch (Exception e) {

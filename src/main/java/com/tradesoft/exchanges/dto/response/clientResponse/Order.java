@@ -1,4 +1,4 @@
-package com.tradesoft.exchanges.dto.response;
+package com.tradesoft.exchanges.dto.response.clientResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class Asks {
+public class Order {
     private Double px;
     private Double qty;
     private Long num;
