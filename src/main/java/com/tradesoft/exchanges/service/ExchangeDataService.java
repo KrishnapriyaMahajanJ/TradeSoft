@@ -7,10 +7,11 @@ import com.tradesoft.exchanges.dto.response.ExchangeResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ExchangeDataService {
 
-    ExchangeResponse getOrderBook(ExchangeRequest request);
+    List<ExchangeResponse> getOrderBook(ExchangeRequest request);
 
     void uploadMetadata(MultipartFile file, Exchanges exchanges) throws IOException;
 
