@@ -7,7 +7,7 @@ import java.util.List;
 
 @UtilityClass
 public class Utils {
-    public static List<List<String>> subList(List<String> list, final int L) {
+    public List<List<String>> subList(List<String> list, final int L) {
         List<List<String>> parts = new ArrayList<>();
         final int N = list.size();
         for (int i = 0; i < N; i += L) {

@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 @Service
@@ -30,7 +31,7 @@ public class ExchangeDataServiceImpl implements ExchangeDataService {
     ExchangeClient exchangeClient;
 
     @Override
-    public ExchangeResponse getOrderBook(ExchangeRequest request) {
+    public List<ExchangeResponse> getOrderBook(ExchangeRequest request) {
         return exchangeClient.exchangeOrderBookDetails(request);
     }
 
