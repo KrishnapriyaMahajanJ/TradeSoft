@@ -17,7 +17,7 @@ public class BlockchainClient {
     @Value("${blockchain.api.token}")
     private String apiToken;
 
-    public BlockchainResponse getResponse(Object symbol) {
+    public BlockchainResponse getResponse(String symbol) {
         RestTemplate restTemplate = new RestTemplate();
         String ORDER_BOOK_DATA = "/l3/";
         System.out.println(baseUrl+ORDER_BOOK_DATA+symbol);
