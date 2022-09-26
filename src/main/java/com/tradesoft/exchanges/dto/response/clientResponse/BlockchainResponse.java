@@ -1,12 +1,12 @@
 package com.tradesoft.exchanges.dto.response.clientResponse;
 
-import com.tradesoft.exchanges.dto.enums.Exchanges;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,18 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BlockchainResponse implements Serializable {
 
-    private Exchanges exchange;
-
     private String symbol;
 
-    private AverageResponse bids;
+    private List<Order> bids;
 
-    private AverageResponse asks;
+    private List<Order> asks;
 }
 
-class AverageResponse{
-    Double avgPrice;
-    Double quantity;
-    private Long num;
-
-}

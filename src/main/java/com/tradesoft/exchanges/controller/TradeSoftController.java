@@ -1,6 +1,6 @@
 package com.tradesoft.exchanges.controller;
 
-import com.tradesoft.exchanges.dto.enums.Exchanges;
+import com.tradesoft.exchanges.model.Exchanges;
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
 import com.tradesoft.exchanges.service.ExchangeDataService;
 import org.springframework.beans.factory.annotation.Autowired;
