@@ -1,6 +1,7 @@
 package com.tradesoft.exchanges.dto.request;
 
-import com.tradesoft.exchanges.dto.enums.Exchanges;
+import com.tradesoft.exchanges.model.Exchanges;
+import com.tradesoft.exchanges.model.ExchangeMetadata;
 import lombok.Builder;
 import lombok.Data;
 

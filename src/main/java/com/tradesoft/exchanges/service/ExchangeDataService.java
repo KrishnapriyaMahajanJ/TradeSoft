@@ -1,7 +1,7 @@
 package com.tradesoft.exchanges.service;
 
-import com.tradesoft.exchanges.dto.enums.Exchanges;
-import com.tradesoft.exchanges.dto.request.ExchangeMetadata;
+import com.tradesoft.exchanges.model.Exchanges;
+import com.tradesoft.exchanges.model.ExchangeMetadata;
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
 import com.tradesoft.exchanges.dto.response.ExchangeResponse;
 import org.springframework.web.multipart.MultipartFile;

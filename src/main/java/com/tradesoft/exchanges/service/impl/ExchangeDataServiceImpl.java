@@ -1,15 +1,16 @@
 package com.tradesoft.exchanges.service.impl;
 
 import com.tradesoft.exchanges.client.ExchangeClient;
-import com.tradesoft.exchanges.dto.enums.Exchanges;
+import com.tradesoft.exchanges.model.Exchanges;
 import com.tradesoft.exchanges.dto.request.BlockchainMetadata;
-import com.tradesoft.exchanges.dto.request.ExchangeMetadata;
+import com.tradesoft.exchanges.model.ExchangeMetadata;
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
 import com.tradesoft.exchanges.dto.response.ExchangeResponse;
 import com.tradesoft.exchanges.exceptions.DataNotAvailable;
 import com.tradesoft.exchanges.exceptions.NotValidExchange;
 import com.tradesoft.exchanges.repository.ExchangeDetailsRepository;
 import com.tradesoft.exchanges.service.ExchangeDataService;
+import com.tradesoft.exchanges.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,7 @@ public class ExchangeDataServiceImpl implements ExchangeDataService {
                 StandardCharsets.UTF_8))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
+                String[] values = line.split(Constants.COMMA);
                 ExchangeMetadata metadata;
                 switch (exchanges) {
                     case BLOCKCHAIN:

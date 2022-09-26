@@ -1,8 +1,8 @@
-package com.tradesoft.exchanges.dto.request;
+package com.tradesoft.exchanges.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.tradesoft.exchanges.dto.enums.Exchanges;
+import com.tradesoft.exchanges.dto.request.BlockchainMetadata;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
