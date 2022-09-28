@@ -1,7 +1,6 @@
 package com.tradesoft.exchanges.utils;
 
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
-//import com.tradesoft.exchanges.dto.response.clientResponse.Asks;
 import com.tradesoft.exchanges.dto.response.BlockchainExchangeResponse;
 import com.tradesoft.exchanges.dto.response.ExchangeResponse;
 import com.tradesoft.exchanges.dto.response.clientResponse.AverageResponse;
@@ -10,8 +9,6 @@ import com.tradesoft.exchanges.dto.response.clientResponse.Order;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 @UtilityClass
 public class ObjectMapper {
@@ -30,7 +27,7 @@ public class ObjectMapper {
         return response;
     }
 
-    private AverageResponse transformOrder(List<Order> orders){
+    private AverageResponse transformOrder(List<Order> orders) {
         return AverageResponse.builder()
                 .avgPrice(orders.stream()
                         .map(Order::getPx)
