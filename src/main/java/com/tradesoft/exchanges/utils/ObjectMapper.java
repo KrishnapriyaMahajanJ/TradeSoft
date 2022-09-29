@@ -1,5 +1,6 @@
 package com.tradesoft.exchanges.utils;
 
+import com.tradesoft.exchanges.dto.enums.OrderType;
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
 import com.tradesoft.exchanges.dto.response.BlockchainExchangeResponse;
 import com.tradesoft.exchanges.dto.response.ExchangeResponse;
@@ -17,11 +18,18 @@ public class ObjectMapper {
         ExchangeResponse response = null;
         switch (request.getType()) {
             case BLOCKCHAIN: {
-                response = BlockchainExchangeResponse.builder()
-                        .bids(transformOrder(blockchainResponse.getBids()))
-                        .asks(transformOrder(blockchainResponse.getAsks()))
-                        .symbol(blockchainResponse.getSymbol())
-                        .build();
+                if (request.getOrderType().equals(OrderType.ASK))
+                    response = BlockchainExchangeResponse.builder()
+                            .orderDetails(transformOrder(blockchainResponse.getAsks()))
+                            .orderType(OrderType.ASK)
+                            .symbol(blockchainResponse.getSymbol())
+                            .build();
+                else
+                    response = BlockchainExchangeResponse.builder()
+                            .orderDetails(transformOrder(blockchainResponse.getBids()))
+                            .orderType(OrderType.BID)
+                            .symbol(blockchainResponse.getSymbol())
+                            .build();
             }
         }
         return response;

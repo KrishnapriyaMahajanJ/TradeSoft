@@ -1,6 +1,8 @@
 package com.tradesoft.exchanges.client;
 
+import com.tradesoft.exchanges.dto.enums.Sorting;
 import com.tradesoft.exchanges.dto.request.ExchangeRequest;
+import com.tradesoft.exchanges.dto.response.BlockchainExchangeResponse;
 import com.tradesoft.exchanges.dto.response.ExchangeResponse;
 import com.tradesoft.exchanges.dto.response.clientResponse.SymbolsData;
 import com.tradesoft.exchanges.utils.Constants;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -21,6 +24,13 @@ import static com.tradesoft.exchanges.utils.Constants.NO_OF_THREADS;
 @Component
 public class ExchangeClient {
 
+
+    private static final CompletionService<List<ExchangeResponse>> executorCompletionService;
+
+    static {
+        ExecutorService executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
+        executorCompletionService = new ExecutorCompletionService<>(executorService);
+    }
 
     @Autowired
     BlockchainClient blockchainClient;
@@ -35,18 +45,15 @@ public class ExchangeClient {
                     symbolsExchangeResponse = fetchResponseForSymbols(symbols, request);
                 } else {
                     List<List<String>> symbolSubLists = Utils.subList(symbols, Constants.MAX_SYMBOLS_FOR_SINGLE_THREAD);
-                    long milli = System.currentTimeMillis();
-                    ExecutorService executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
-                    CompletionService<List<ExchangeResponse>> executorCompletionService = new ExecutorCompletionService<>(executorService);
                     symbolSubLists
                             .parallelStream()
-                            .map(symbolsSubList -> (Callable<List<ExchangeResponse>>) () -> fetchResponseForSymbols(symbols, request))
+                            .map(symbolsSubList ->
+                                    (Callable<List<ExchangeResponse>>) () ->
+                                            fetchResponseForSymbols(symbols, request))
                             .forEach(executorCompletionService::submit);
                     symbolsExchangeResponse = IntStream.of(symbolSubLists.size()).mapToObj(x ->
-                                    getExchangeResponseMap(executorCompletionService)).collect(Collectors.toList())
+                                    getExchangeResponseMap()).collect(Collectors.toList())
                             .stream().flatMap(List::stream).collect(Collectors.toList());
-                    long milliend = System.currentTimeMillis();
-                    System.out.println("Kitna time laga " + (milliend - milli));
                 }
                 return symbolsExchangeResponse;
             default:
@@ -54,10 +61,10 @@ public class ExchangeClient {
         }
     }
 
-    private List<ExchangeResponse> getExchangeResponseMap(CompletionService<List<ExchangeResponse>> executorCompletionService) {
+    private List<ExchangeResponse> getExchangeResponseMap() {
         List<ExchangeResponse> resp;
         try {
-            resp = executorCompletionService.take().get();
+            resp = ExchangeClient.executorCompletionService.take().get();
         } catch (InterruptedException | ExecutionException e) {
             resp = new ArrayList<>();
         }
@@ -65,8 +72,24 @@ public class ExchangeClient {
     }
 
     private List<ExchangeResponse> fetchResponseForSymbols(List<String> symbols, ExchangeRequest request) {
-        return symbols.stream().map(symbol -> ObjectMapper.toBlockchainExchangeResponse(blockchainClient.getResponse(symbol),
-                request)).collect(Collectors.toList());
+        List<ExchangeResponse> responses = symbols
+                .stream()
+                .map(symbol ->
+                        ObjectMapper.toBlockchainExchangeResponse(blockchainClient.getResponse(symbol), request))
+                .collect(Collectors.toList());
+
+        if (request.getSorting().equals(Sorting.ASCENDING)) {
+            return responses.stream()
+                    .map(x -> (BlockchainExchangeResponse) (x))
+                    .sorted(Comparator.comparing(BlockchainExchangeResponse::getSymbol))
+                    .collect(Collectors.toList());
+        } else {
+            return responses.stream()
+                    .map(x -> (BlockchainExchangeResponse) (x))
+                    .sorted(Comparator.comparing(BlockchainExchangeResponse::getSymbol).reversed())
+                    .collect(Collectors.toList());
+
+        }
     }
 
 }

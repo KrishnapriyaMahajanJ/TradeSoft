@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        property = "type")
+        property = "exchange")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = BlockchainExchangeResponse.class, name = "BLOCKCHAIN")
 })
@@ -17,10 +17,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class ExchangeResponse {
 
-    protected Exchanges type;
+    protected Exchanges exchange;
 
     public ExchangeResponse(Exchanges type) {
-        this.type = type;
+        this.exchange = type;
     }
 
 }

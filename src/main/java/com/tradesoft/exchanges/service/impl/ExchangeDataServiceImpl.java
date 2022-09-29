@@ -46,9 +46,9 @@ public class ExchangeDataServiceImpl implements ExchangeDataService {
                 switch (exchanges) {
                     case BLOCKCHAIN:
                         metadata = BlockchainMetadata.builder()
-                                .address(values[1])
-                                .description(values[2])
-                                .name(values[3])
+                                .address(values[2])
+                                .description(values[1])
+                                .name(values[0])
                                 .build();
                         break;
                     default:
